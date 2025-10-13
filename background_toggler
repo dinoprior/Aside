@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+body {
+  background-color: white;
+  color: black;
+  transition: background-color 1s ease, color 1s ease;
+}
+
+body.dark {
+  background-color: black;
+  color: white;
+}
+
+button {
+  margin: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  background-color: #ccc;
+  transition: background-color 0.3s ease;
+}
+
+body.dark button {
+  background-color: #444;
+  color: white;
+}
+    </style>
+</head>
+<body>
+      <button id="toggle">Změnit pozadí</button>
+
+
+      <script>
+const btn = document.getElementById("toggle");
+
+// 🟢 Při načtení stránky zkontroluj uložené nastavení
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme === "dark") {
+  document.body.classList.add("dark");
+}
+
+// 🌓 Při kliknutí přepni motiv a ulož stav
+btn.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+
+  if (document.body.classList.contains("dark")) {
+    localStorage.setItem("theme", "dark");
+  } else {
+    localStorage.setItem("theme", "light");
+  }
+});
+      </script>
+</body>
+</html>
