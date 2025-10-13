@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random image</title>
+
+    <style>
+
+body {
+    background-image: url("https://picsum.photos/1280/1920?random=1");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.btn {
+  margin: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  background-color: #ccc;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #444;
+  color: white;
+}
+    </style>
+</head>
+<body>
+
+
+<button class="btn">Změnit obrázek</button>
+
+
+      <script>
+
+const bodyEl = document.body;
+const btnEl = document.querySelector('.btn');
+
+// ⏱ interval v milisekundách
+const interval = 3600000; // 1 hodina
+
+// 💡 funkce pro změnu obrázků
+function changeImages() {
+  const nahoda = Math.floor(Math.random() * 3001);
+
+      bodyEl.style.backgroundImage = `url('https://picsum.photos/1280/1920?random=${nahoda}')`;
+}
+
+// 🖱 Změna po kliknutí
+btnEl.addEventListener('click', changeImages);
+
+// 🔁 Automatická změna po intervalu
+setInterval(changeImages, interval);
+
+// ✅ Spustí slideshow hned po načtení
+changeImages();
+      </script>
+</body>
+</html>
