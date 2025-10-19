@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Univerzální GSAP text animace</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #111;
+      font-family: "IBM Plex Mono", monospace;
+    }
+
+    .anim-text {
+    }
+
+    h1 {
+      font-size: clamp(2rem, 6vw, 4rem);   
+    }
+
+    .char {
+      display: inline-block;
+      transform-origin: center;
+      white-space: pre;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="anim-text">Headline</h1>
+  <h2 class="anim-text">Hello, World!</h2>
+  <p class="anim-text">Tento efekt lze použít kdekoliv.</p>
+
+  <script>
+  // rozdělí text na jednotlivé znaky
+  function wrapTextInSpans(el) {
+    const text = el.textContent;
+    el.textContent = '';
+    return [...text].map(ch => {
+      const span = document.createElement('span');
+      span.className = 'char';
+      span.textContent = ch === ' ' ? '\u00A0' : ch;
+      el.appendChild(span);
+      return span;
+    });
+  }
+
+  // po načtení stránky
+  document.addEventListener('DOMContentLoaded', () => {
+    const elements = document.querySelectorAll('.anim-text');
+
+    elements.forEach((el, i) => {
+      const chars = wrapTextInSpans(el);
+      gsap.set(chars, { opacity: 0, y: 40, rotationX: -90 });
+
+      gsap.to(chars, {
+        opacity: 1,
+        y: 0,
+        rotationX: 0,
+        stagger: 0.04,
+        duration: 0.8,
+        ease: 'back.out(1.6)',
+        delay: i * 0.4 // animace jednotlivých textů po sobě
+      });
+    });
+  });
+  </script>
+
+</body>
+</html>
