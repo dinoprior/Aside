@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scramble text animace</title>
+  <style>
+    body {
+      background: #111;
+      color: #0f0;
+      font-family: monospace;
+      font-size: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    [data-scramble] {
+      margin: 0.5em 0;
+      letter-spacing: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <div data-scramble="Hello, World!"></div>
+  <div data-scramble="Stack Overflow"></div>
+
+  <script>
+    // generování náhodného textu
+    const randomString = (n, r='') => {
+      while (n--) r += String.fromCharCode((r=Math.random()*62|0, r+=r>9?(r<36?55:61):48));
+      return r;
+    };
+
+    const unscramble = (el) => {
+      const chars = [...el.dataset.scramble];
+      const tot = chars.length;
+      
+      let iteration = 0;
+      let ch = 0;
+      let solved = "";
+      
+      el._itv = setInterval(() => {
+        if (iteration > 10) {
+          iteration = 0;
+          solved += chars[ch];
+          ch += 1;
+        }
+        
+        el.textContent = randomString(tot - ch, solved);
+        
+        if (ch === tot) {
+          clearInterval(el._itv);
+        }
+        iteration += 1;
+      }, 30);
+    };
+
+    const scramble = (el) => {
+      clearInterval(el._itv);
+      el.textContent = randomString([...el.dataset.scramble].length);
+    };
+
+    // funkce pro spuštění animace při načtení
+    const scrambler = (el, delay = 0) => {
+      scramble(el);
+      // malá prodleva mezi elementy pro hezčí efekt
+      setTimeout(() => unscramble(el), delay);
+    };
+
+    // spustí se po načtení stránky
+    window.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll("[data-scramble]").forEach((el, i) => {
+        scrambler(el, i * 800); // animace po sobě (0.8s rozestup)
+      });
+    });
+  </script>
+
+</body>
+</html>
