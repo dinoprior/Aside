@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Follow Cursor Efekt</title>
+
+  <style>
+
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  background-color: #f0f0f0;
+  overflow: hidden;
+  }
+
+/* Stylování vlastního kurzoru */
+#cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  background-color: none;
+  border: 1px solid black;
+  border-radius: 50%;
+  pointer-events: none; /* Zajištění, že kurzor nebude blokovat interakci s ostatními prvky */
+  transform: translate(-50%, -50%);
+  transition: transform 0.5s ease-out;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+  </style>
+
+</head>
+<body>
+  <div id="cursor"></div>
+
+<main>
+  <section></section>
+</main>
+
+  <script>
+// kurzor
+const cursor = document.getElementById('cursor');
+
+let mouseX = 0;
+let mouseY = 0;
+let currentX = 0;
+let currentY = 0;
+const speed = 0.1; // menší číslo = větší zpoždění
+let isMouseActive = false;
+
+// Na začátku skrytý
+cursor.style.opacity = 0;
+
+// Sleduj pohyb myši
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+
+  if (!isMouseActive) {
+    isMouseActive = true;
+    cursor.style.opacity = 1; // zobraz kurzor
+  }
+});
+
+// Animace kurzoru s lehkým zpožděním
+function animateCursor() {
+  if (isMouseActive) {
+    currentX += (mouseX - currentX) * speed;
+    currentY += (mouseY - currentY) * speed;
+    cursor.style.transform = `translate(${currentX}px, ${currentY}px) translate(-50%, -50%)`;
+  }
+  requestAnimationFrame(animateCursor);
+}
+
+animateCursor();
+  </script>
+
+</body>
+</html>
